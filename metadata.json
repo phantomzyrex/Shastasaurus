@@ -1,0 +1,6 @@
+{
+  "name": "Shastasaurus — Strange Giant of the Triassic Seas",
+  "description": "An immersive deep-ocean editorial monograph and interactive paleontological portfolio exploring the Late Triassic marine reptile Shastasaurus.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

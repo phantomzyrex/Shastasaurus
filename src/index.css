@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+:root {
+  --twilight: #3FA0E6;
+  --blue:     #1E6FC0;
+  --cobalt:   #12489A;
+  --navy:     #0A2C6B;
+  --midnight: #061B45;
+  --abyss:    #030F2B;
+  --void:     #010614;
+  --foam:     #EAF6FF;
+  --glow:     #6FE8FF;
+
+  --font-display: 'Marcellus', 'Cinzel', 'Optima', Georgia, serif;
+  --font-body:    'Jost', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--void);
+    color: var(--foam);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--void);
+    color: var(--foam);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Outlined large section numerals */
+.section-numeral-outline {
+  font-family: var(--font-display);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(234, 246, 255, 0.4);
+  user-select: none;
+}
+
+/* Hero radial ocean gradient matching reference lighting structure */
+.hero-ocean-gradient {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(1, 6, 20, 0.85) 0%, transparent 38%),
+    radial-gradient(circle at 100% 0%, rgba(1, 6, 20, 0.85) 0%, transparent 38%),
+    radial-gradient(circle at 0% 100%, rgba(1, 6, 20, 0.96) 0%, transparent 48%),
+    radial-gradient(circle at 100% 100%, rgba(1, 6, 20, 0.96) 0%, transparent 48%),
+    radial-gradient(
+      ellipse 88% 72% at 50% -15%,
+      var(--twilight) 0%,
+      var(--blue) 20%,
+      var(--cobalt) 40%,
+      var(--navy) 62%,
+      var(--midnight) 82%,
+      var(--void) 100%
+    );
+}
+
+/* Hero wordmark styling */
+.hero-wordmark-glow {
+  color: var(--foam);
+  text-shadow:
+    0 0 38px rgba(111, 232, 255, 0.22),
+    0 12px 44px rgba(1, 6, 20, 0.65);
+}
+
+/* Creature deep-water optical grading & bottom dissolve */
+.creature-bottom-mask {
+  -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+}
+
+@keyframes rimPulse {
+  0%, 100% {
+    opacity: 0.92;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.creature-graded {
+  filter: url(#shastasaurus-duotone) drop-shadow(0 0 42px rgba(80, 200, 255, 0.42));
+  animation: rimPulse 6s ease-in-out infinite;
+}
+
+@keyframes creatureIdleDrift {
+  0%, 100% {
+    transform: translate3d(0px, -8px, 0) rotate(-0.6deg);
+  }
+  50% {
+    transform: translate3d(0px, 8px, 0) rotate(0.6deg);
+  }
+}
+
+.creature-idle {
+  animation: creatureIdleDrift 8s ease-in-out infinite;
+}
+
+@keyframes lightShaftSwayA {
+  0%, 100% {
+    transform: rotate(-6deg) translateX(-14px) scaleY(1);
+    opacity: 0.14;
+  }
+  50% {
+    transform: rotate(-2deg) translateX(18px) scaleY(1.06);
+    opacity: 0.09;
+  }
+}
+
+@keyframes lightShaftSwayB {
+  0%, 100% {
+    transform: rotate(5deg) translateX(12px) scaleY(1.04);
+    opacity: 0.12;
+  }
+  50% {
+    transform: rotate(1.5deg) translateX(-16px) scaleY(0.96);
+    opacity: 0.17;
+  }
+}
+
+.light-shaft-a {
+  animation: lightShaftSwayA 16s ease-in-out infinite;
+}
+
+.light-shaft-b {
+  animation: lightShaftSwayB 21s ease-in-out infinite;
+}
+
+/* 3D Flip Card utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Custom subtle scrollbars for horizontal gallery */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Reduced motion compliance */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .creature-idle,
+  .creature-graded,
+  .light-shaft-a,
+  .light-shaft-b {
+    animation: none !important;
+  }
+}
