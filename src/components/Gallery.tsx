@@ -144,11 +144,11 @@ export const Gallery: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="10"
+        number="11"
         depthTag="3,650 M · MIDNIGHT / ABYSSAL TRANSITION"
         kicker="ARCHIVAL PLATES & SPECIMEN DIAGRAMS"
-        title="Exhibition Gallery"
-        subtitle="Drag horizontally or select any plate to inspect in the full-screen specimen lightbox. Drop custom /assets/gallery-01.jpg ... gallery-06.jpg files into /public/assets/ to replace the labelled archival plate placeholders automatically."
+        title="Gallery"
+        subtitle="Drag horizontally or select any plate to inspect in the full-screen specimen lightbox. Drop custom /assets/gallery-01.jpg ... gallery-06.jpg files into /public/assets/ to replace the labelled archival placeholders."
       />
 
       {/* Carousel Controls */}

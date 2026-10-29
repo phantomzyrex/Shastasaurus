@@ -1,6 +1,5 @@
 import React from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
 import { GEOLOGICAL_TIMELINE, computeSkullMetrics } from '../data/shastasaurusData';
 
 export const Evolution: React.FC = () => {
@@ -14,7 +13,7 @@ export const Evolution: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="08"
+        number="09"
         depthTag="3,000 M · MIDNIGHT ZONE"
         kicker="MACROEVOLUTION, ONTOGENY & TURNOVER"
         title="Evolution and Extinction"
@@ -32,48 +31,54 @@ export const Evolution: React.FC = () => {
           <p>
             Shastasaurids were the giants of the Late Triassic. The Triassic–Jurassic mass
             extinction, about 201.4 million years ago, hit many marine groups, and the giant
-            shastasaurids seem to disappear around then, though the Welsh limb bone (Martin et al.,
-            2015) suggests one may have lingered into the earliest Jurassic. Smaller, more
-            dolphin-like ichthyosaurs survived and persisted until about 90 million years ago, more
-            than 100 million years after <em>Shastasaurus</em>.
+            shastasaurids seem to disappear around then, though the Welsh limb bone suggests one
+            may have lingered into the earliest Jurassic. Smaller, more dolphin-like ichthyosaurs
+            survived and persisted until about 90 million years ago, more than 100 million years
+            after <em>Shastasaurus</em>.
           </p>
         </div>
 
         {/* Reproduction Callout */}
         <div className="lg:col-span-4 border border-[#EAF6FF]/15 bg-[#061B45]/45 p-6">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
             <span className="font-display text-xs uppercase tracking-[0.18em] text-[#6FE8FF]">
               REPRODUCTION
             </span>
-            <EvidenceChip level="ichthyosaur group trait" />
+            <span className="font-display text-[11px] uppercase tracking-[0.14em] text-[#EAF6FF]/70">
+              ICHTHYOSAUR GROUP TRAIT
+            </span>
           </div>
           <p className="text-sm text-[#EAF6FF]/85 leading-relaxed">
             Ichthyosaurs as a group are known to have given birth to live young in the water, but
-            no birth evidence is documented for <em>Shastasaurus</em> itself.
+            no birth evidence is documented for <em>Shastasaurus</em> itself (ichthyosaur group
+            trait).
           </p>
         </div>
       </div>
 
-      {/* Animated Geological Timeline (250 Ma -> 90 Ma) */}
+      {/* Animated Geological Timeline (250 Ma -> 90 Ma) with Triassic-Jurassic Boundary Marker */}
       <div className="mb-14 border border-[#EAF6FF]/15 bg-[#030F2B]/75 p-6 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
           <h3 className="font-display text-xl uppercase tracking-[0.06em] text-[#EAF6FF]">
-            Geological Span of Ichthyosauria (250 Ma – 90 Ma)
+            Geological Timeline (250 Ma – 90 Ma)
           </h3>
           <span className="font-display text-xs uppercase tracking-[0.16em] text-[#6FE8FF]">
-            160 MILLION YEARS OF MARINE REPTILE HISTORY
+            INCLUDES TRIASSIC–JURASSIC BOUNDARY MARKER (~201.4 MA)
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {GEOLOGICAL_TIMELINE.map((stage, idx) => {
             const isShastasaurusStage = stage.id === 'carnian';
+            const isBoundary = Boolean(stage.isExtinctionBoundary);
             return (
               <div
                 key={stage.id}
-                className={`p-4 border flex flex-col justify-between ${
-                  isShastasaurusStage
-                    ? 'border-[#6FE8FF] bg-[#061B45]/75 shadow-[0_0_25px_rgba(111,232,255,0.2)]'
+                className={`p-4 border flex flex-col justify-between relative ${
+                  isBoundary
+                    ? 'border-[#6FE8FF] bg-[#0A2C6B]/65'
+                    : isShastasaurusStage
+                    ? 'border-[#3FA0E6] bg-[#061B45]/75'
                     : 'border-[#EAF6FF]/12 bg-[#010614]/65'
                 }`}
               >
@@ -82,6 +87,11 @@ export const Evolution: React.FC = () => {
                     <span className="font-display text-[11px] uppercase tracking-[0.16em] text-[#6FE8FF] tabular-nums">
                       0{idx + 1} · {stage.ageMa}
                     </span>
+                    {isBoundary && (
+                      <span className="font-display text-[9px] uppercase tracking-[0.14em] text-[#6FE8FF]">
+                        BOUNDARY MARKER
+                      </span>
+                    )}
                   </div>
                   <p className="font-display text-xs uppercase tracking-[0.12em] text-[#EAF6FF]/65 mb-1">
                     {stage.era}
@@ -97,16 +107,18 @@ export const Evolution: React.FC = () => {
 
       {/* Juvenile vs Adult Infographic (3.74 m vs 8.3 m; skull 9.3% vs 8.3%) */}
       <div className="border border-[#6FE8FF]/35 bg-[#010614]/85 p-6 sm:p-8">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-3 mb-6">
           <div>
             <span className="font-display text-xs uppercase tracking-[0.2em] text-[#6FE8FF] block">
               ALLOMETRIC GROWTH · S. LIANGAE (JI ET AL., 2013)
             </span>
             <h3 className="font-display text-xl sm:text-2xl uppercase tracking-[0.04em] text-[#EAF6FF]">
-              Juvenile versus Adult Cranial Scaling
+              Juvenile versus Adult Infographic (3.74 m vs 8.3 m)
             </h3>
           </div>
-          <EvidenceChip level="CONFIRMED" />
+          <span className="font-display text-xs uppercase tracking-[0.16em] text-[#6FE8FF]">
+            SKULL 9.3% VS 8.3% OF BODY LENGTH
+          </span>
         </div>
 
         <div className="space-y-6">
@@ -117,7 +129,7 @@ export const Evolution: React.FC = () => {
                 Juvenile Specimen (<em>S. liangae</em>)
               </span>
               <span className="font-display text-sm text-[#6FE8FF] tabular-nums">
-                Total Length: 3.74 m · Skull: 9.3% ({juvenileMetrics.skullLengthMeters} m) · Toothless
+                3.74 m · Skull: 9.3% ({juvenileMetrics.skullLengthMeters} m) · Toothless
               </span>
             </div>
             <div className="w-full h-7 bg-[#010614] border border-[#EAF6FF]/15 p-1 flex items-center">
@@ -143,10 +155,10 @@ export const Evolution: React.FC = () => {
           <div className="border border-[#6FE8FF]/45 bg-[#061B45]/55 p-5">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <span className="font-display text-base uppercase tracking-[0.06em] text-[#EAF6FF]">
-                Largest Adult Specimen (<em>S. liangae</em>)
+                Adult Specimen (<em>S. liangae</em>)
               </span>
               <span className="font-display text-sm text-[#6FE8FF] tabular-nums">
-                Total Length: 8.3 m · Skull: 8.3% ({adultMetrics.skullLengthMeters} m) · Toothless
+                8.3 m · Skull: 8.3% ({adultMetrics.skullLengthMeters} m) · Toothless
               </span>
             </div>
             <div className="w-full h-7 bg-[#010614] border border-[#EAF6FF]/15 p-1 flex items-center">

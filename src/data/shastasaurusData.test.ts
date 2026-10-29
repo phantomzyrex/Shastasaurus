@@ -11,6 +11,7 @@ import {
   MYTH_REALITY_CARDS,
   DID_YOU_KNOW_FACTS,
   SCIENTIFIC_SOURCES,
+  GEOLOGICAL_TIMELINE,
 } from './shastasaurusData';
 
 test('calculateDepthFromScroll clamps between 0 m and 4,000 m', () => {
@@ -83,10 +84,14 @@ test('computeSkullMetrics accurately computes adult (8.3 m, 8.3%) and juvenile (
   assert.equal(juvenile.remainingBodyMeters, 3.39);
 });
 
-test('scientific dataset integrity: 9 overview stats, 9 anatomy hotspots, 6 myths, 8 facts, 18 sources', () => {
+test('scientific dataset integrity and Triassic-Jurassic boundary marker', () => {
   assert.equal(OVERVIEW_STATS.length, 9);
   assert.equal(ANATOMY_HOTSPOTS.length, 9);
   assert.equal(MYTH_REALITY_CARDS.length, 6);
   assert.equal(DID_YOU_KNOW_FACTS.length, 8);
   assert.equal(SCIENTIFIC_SOURCES.length, 18);
+  assert.equal(
+    GEOLOGICAL_TIMELINE.some((s) => s.isExtinctionBoundary && s.ageMa.includes('201.4')),
+    true
+  );
 });

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
 import {
   ANATOMY_HOTSPOTS,
   AnatomyHotspot,
+  SIDE_ASSET_PRIMARY,
   HERO_ASSET_PRIMARY,
-  SIDE_ASSET_FALLBACK,
 } from '../data/shastasaurusData';
 
 export const AnatomyHotspots: React.FC = () => {
   const [selectedHotspot, setSelectedHotspot] = useState<AnatomyHotspot>(
     ANATOMY_HOTSPOTS[0]
   );
-  const [imgSrc, setImgSrc] = useState(HERO_ASSET_PRIMARY);
+  const [imgSrc, setImgSrc] = useState(SIDE_ASSET_PRIMARY);
 
   return (
     <section
@@ -21,14 +20,13 @@ export const AnatomyHotspots: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="03"
+        number="04"
         depthTag="950 M · TWILIGHT / MIDNIGHT BOUNDARY"
         kicker="MORPHOLOGY & SKELETAL ARCHITECTURE"
-        title="Interactive Annotated Anatomy"
-        subtitle="Select any anatomical hotspot on the specimen diagram or index below to inspect verified skeletal traits, inferred soft-tissue characters, and unresolved biomechanical questions."
+        title="Anatomy"
+        subtitle="Select any anatomical hotspot on the side-view diagram or index below to inspect verified skeletal traits, inferred characters, and ichthyosaur group traits."
       />
 
-      {/* Interactive Annotated Side-View Container */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         {/* Left/Main Annotated Creature Canvas (8 cols) */}
         <div className="lg:col-span-8 border border-[#EAF6FF]/15 bg-[#030F2B]/75 p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
@@ -42,13 +40,12 @@ export const AnatomyHotspots: React.FC = () => {
               </span>
             </div>
             <span className="font-display text-xs uppercase tracking-[0.16em] text-[#EAF6FF]/70 tabular-nums">
-              9 ANATOMICAL LOCI
+              9 ANATOMICAL HOTSPOTS
             </span>
           </div>
 
           {/* Relative Diagram Stage */}
           <div className="relative w-full aspect-[16/9] min-h-[260px] flex items-center justify-center my-auto select-none">
-            {/* Subtle Bathymetric Coordinate Grid */}
             <div
               className="pointer-events-none absolute inset-0 opacity-15"
               style={{
@@ -59,18 +56,16 @@ export const AnatomyHotspots: React.FC = () => {
               aria-hidden="true"
             />
 
-            {/* User's Creature Image with Rostral Mask so only a short, blunt, toothless snout is shown */}
             <div className="relative w-[92%] h-[92%] flex items-center justify-center">
               <img
                 src={imgSrc}
                 onError={() => {
-                  if (imgSrc !== SIDE_ASSET_FALLBACK) setImgSrc(SIDE_ASSET_FALLBACK);
+                  if (imgSrc !== HERO_ASSET_PRIMARY) setImgSrc(HERO_ASSET_PRIMARY);
                 }}
                 alt="Annotated lateral view of Shastasaurus showing slender body, four paddle flippers, and short toothless snout"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-contain creature-graded"
                 style={{
-                  // Clips the far-left elongated rostrum tip so the annotated diagram strictly displays a short, toothless snout
                   clipPath: 'polygon(11.5% 0%, 100% 0%, 100% 100%, 11.5% 100%)',
                 }}
               />
@@ -82,7 +77,6 @@ export const AnatomyHotspots: React.FC = () => {
                 preserveAspectRatio="xMidYMid meet"
                 aria-hidden="true"
               >
-                {/* Short triangular toothless rostrum contour & dimension bracket (8-9% skull length) */}
                 <path
                   d="M 195 305 Q 112 332 108 355 Q 114 378 215 376"
                   fill="#061B45"
@@ -110,7 +104,7 @@ export const AnatomyHotspots: React.FC = () => {
                   fontFamily="Marcellus, serif"
                   letterSpacing="1.5"
                 >
-                  SKULL ~8–9% LENGTH (TOOTHLESS)
+                  SKULL ~8–9% LENGTH (SHORT, TOOTHLESS SNOUT)
                 </text>
               </svg>
 
@@ -145,29 +139,28 @@ export const AnatomyHotspots: React.FC = () => {
 
           <div className="mt-4 pt-4 border-t border-[#EAF6FF]/12 flex flex-wrap items-center justify-between gap-2 text-xs text-[#EAF6FF]/65">
             <span>
-              Cranial contour calibrated to <em>S. liangae</em>: short, toothless snout without dental groove.
+              Cranial contour calibrated to <em>S. liangae</em>: short, toothless snout without tooth groove.
             </span>
             <span className="font-display uppercase tracking-[0.14em] text-[#6FE8FF]">
-              CLICK NUMBERED NODES (1–9) TO INSPECT
+              CLICK NUMBERED HOTSPOTS (1–9)
             </span>
           </div>
         </div>
 
         {/* Right Detail Panel & Complete Hotspot List (4 cols) */}
         <div className="lg:col-span-4 flex flex-col justify-between gap-6">
-          {/* Active Hotspot Inspection Card */}
+          {/* Active Hotspot Inspection Tooltip Card */}
           <div
             aria-live="polite"
             className="border border-[#6FE8FF]/45 bg-[#061B45]/60 p-6 shadow-[0_0_35px_rgba(1,6,20,0.6)]"
           >
-            <div className="flex items-center justify-between gap-2 mb-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
               <span className="font-display text-xs uppercase tracking-[0.2em] text-[#6FE8FF]">
-                ACTIVE ANATOMICAL LOCUS
+                ACTIVE ANATOMICAL HOTSPOT
               </span>
-              <EvidenceChip
-                level={selectedHotspot.chip}
-                note={selectedHotspot.chipNote}
-              />
+              <span className="font-display text-[11px] uppercase tracking-[0.14em] text-[#EAF6FF]/75">
+                {selectedHotspot.qualifier}
+              </span>
             </div>
 
             <h3 className="font-display text-2xl uppercase tracking-[0.04em] text-[#EAF6FF] mb-3">
@@ -202,7 +195,9 @@ export const AnatomyHotspots: React.FC = () => {
                       {spot.label}
                     </span>
                   </div>
-                  <EvidenceChip level={spot.chip} note={spot.chipNote} />
+                  <span className="font-display text-[10px] uppercase tracking-[0.12em] text-[#EAF6FF]/60 text-right">
+                    {spot.qualifier}
+                  </span>
                 </button>
               );
             })}

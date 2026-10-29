@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Nav } from './Nav';
-import { HERO_ASSET_PRIMARY, HERO_ASSET_FALLBACK } from '../data/shastasaurusData';
+import { HERO_ASSET_PRIMARY, HERO_ASSET_ALT } from '../data/shastasaurusData';
 
 interface HeroProps {
   isLoaded: boolean;
@@ -12,6 +12,14 @@ interface HeroProps {
 const WORDMARK_LETTERS = 'SHASTASAURUS'.split('');
 const MOBILE_LINE_1 = 'SHASTA'.split('');
 const MOBILE_LINE_2 = 'SAURUS'.split('');
+
+const HEAD_BUBBLES = [
+  { id: 1, left: '34%', bottom: '36%', size: 5, delay: '0s', duration: '6.5s' },
+  { id: 2, left: '36.5%', bottom: '39%', size: 3.5, delay: '1.8s', duration: '5.8s' },
+  { id: 3, left: '38%', bottom: '34%', size: 6, delay: '3.2s', duration: '7.4s' },
+  { id: 4, left: '35%', bottom: '42%', size: 4, delay: '4.5s', duration: '6.2s' },
+  { id: 5, left: '39.5%', bottom: '37%', size: 3, delay: '2.4s', duration: '5.5s' },
+];
 
 export const Hero: React.FC<HeroProps> = ({
   isLoaded,
@@ -26,14 +34,13 @@ export const Hero: React.FC<HeroProps> = ({
   const [imgSrc, setImgSrc] = useState(HERO_ASSET_PRIMARY);
   const [fontSizePx, setFontSizePx] = useState<number | null>(null);
 
-  // Fit-text function so "SHASTASAURUS" spans ~85% of the frame width on desktop/tablet
+  // Fit-text function so "SHASTASAURUS" expands side-by-side (~93% of the frame width) on desktop/tablet
   useEffect(() => {
     const updateFitText = () => {
       if (!frameRef.current) return;
       const frameWidth = frameRef.current.clientWidth;
       if (window.innerWidth >= 768) {
-        // 12 uppercase Marcellus letters with -0.01em tracking span ~85% width at ~0.098 * frameWidth
-        const computed = Math.max(44, Math.min(180, frameWidth * 0.096));
+        const computed = Math.max(56, Math.min(320, frameWidth * 0.112));
         setFontSizePx(computed);
       } else {
         setFontSizePx(null);
@@ -81,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <section
       id="hero"
-      aria-label="Shastasaurus Hero"
+      aria-label="01 Shastasaurus Hero"
       className="relative w-full h-screen min-h-[640px] p-2.5 sm:p-3.5 bg-[#010614] select-none overflow-hidden"
     >
       {/* 100vh Frame with ~24px rounded corners and thin dark margin */}
@@ -89,22 +96,67 @@ export const Hero: React.FC<HeroProps> = ({
         ref={frameRef}
         className="relative w-full h-full rounded-[24px] hero-ocean-gradient overflow-hidden border border-[#EAF6FF]/10 shadow-[0_0_90px_rgba(1,6,20,0.95)] flex flex-col justify-between"
       >
-        {/* LAYER 1: Faint Light Shafts from surface (top 50% of frame) */}
+        {/* LAYER 1A: Faint Light Ripples in top 25% of frame only (opacity ~0.06, mix-blend-screen) */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-[25%] z-[1] opacity-[0.06] mix-blend-screen overflow-hidden"
+          aria-hidden="true"
+        >
+          <svg
+            viewBox="0 0 1440 240"
+            preserveAspectRatio="none"
+            className="w-full h-full"
+          >
+            <defs>
+              <filter id="surface-caustic-ripple" x="0%" y="0%" width="100%" height="100%">
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.018 0.065"
+                  numOctaves="2"
+                  seed="7"
+                  result="rippleNoise"
+                />
+                <feDisplacementMap
+                  in="SourceGraphic"
+                  in2="rippleNoise"
+                  scale="18"
+                  xChannelSelector="R"
+                  yChannelSelector="G"
+                />
+              </filter>
+              <radialGradient id="topRippleGlow" cx="50%" cy="0%" r="70%">
+                <stop offset="0%" stopColor="#6FE8FF" stopOpacity="1" />
+                <stop offset="55%" stopColor="#3FA0E6" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#010614" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <g filter="url(#surface-caustic-ripple)">
+              <ellipse cx="720" cy="18" rx="620" ry="160" fill="url(#topRippleGlow)" />
+              <path
+                d="M180,25 Q450,65 720,22 T1260,30 M240,65 Q520,95 760,55 T1180,68 M320,105 Q620,135 840,95 T1100,112"
+                stroke="#EAF6FF"
+                strokeWidth="3"
+                fill="none"
+              />
+            </g>
+          </svg>
+        </div>
+
+        {/* LAYER 1B: Light Shafts from surface (4-6 soft vertical shafts fading by mid-frame) */}
         <div
           ref={shaftsRef}
           className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
           aria-hidden="true"
         >
-          {/* Left-top vertical light band (like reference) */}
+          {/* Left-top vertical light band */}
           <div
-            className="light-shaft-a absolute -top-16 left-[12%] w-28 sm:w-44 h-[62%] mix-blend-screen blur-[36px]"
+            className="light-shaft-a absolute -top-16 left-[12%] w-28 sm:w-44 h-[56%] mix-blend-screen blur-[36px]"
             style={{
               background:
                 'linear-gradient(180deg, rgba(111,232,255,0.28) 0%, rgba(63,160,230,0.12) 55%, transparent 100%)',
             }}
           />
           <div
-            className="light-shaft-b absolute -top-20 left-[28%] w-20 sm:w-32 h-[54%] mix-blend-screen blur-[32px]"
+            className="light-shaft-b absolute -top-20 left-[28%] w-20 sm:w-32 h-[50%] mix-blend-screen blur-[32px]"
             style={{
               background:
                 'linear-gradient(180deg, rgba(234,246,255,0.20) 0%, rgba(63,160,230,0.08) 58%, transparent 100%)',
@@ -112,22 +164,22 @@ export const Hero: React.FC<HeroProps> = ({
           />
           {/* Centre-top primary twilight glow shaft */}
           <div
-            className="light-shaft-a absolute -top-24 left-[46%] w-36 sm:w-56 h-[58%] mix-blend-screen blur-[40px]"
+            className="light-shaft-a absolute -top-24 left-[46%] w-36 sm:w-56 h-[54%] mix-blend-screen blur-[40px]"
             style={{
               background:
                 'linear-gradient(180deg, rgba(111,232,255,0.24) 0%, rgba(30,111,192,0.10) 60%, transparent 100%)',
             }}
           />
           <div
-            className="light-shaft-b absolute -top-16 right-[25%] w-24 sm:w-36 h-[52%] mix-blend-screen blur-[34px]"
+            className="light-shaft-b absolute -top-16 right-[25%] w-24 sm:w-36 h-[50%] mix-blend-screen blur-[34px]"
             style={{
               background:
                 'linear-gradient(180deg, rgba(234,246,255,0.18) 0%, rgba(63,160,230,0.08) 55%, transparent 100%)',
             }}
           />
-          {/* Right-top vertical light band (like reference) */}
+          {/* Right-top vertical light band */}
           <div
-            className="light-shaft-a absolute -top-16 right-[10%] w-28 sm:w-44 h-[62%] mix-blend-screen blur-[36px]"
+            className="light-shaft-a absolute -top-16 right-[10%] w-28 sm:w-44 h-[56%] mix-blend-screen blur-[36px]"
             style={{
               background:
                 'linear-gradient(180deg, rgba(111,232,255,0.26) 0%, rgba(63,160,230,0.11) 55%, transparent 100%)',
@@ -135,49 +187,26 @@ export const Hero: React.FC<HeroProps> = ({
           />
         </div>
 
-        {/* LAYER 2: Distant Silhouettes (blurred SVG shoals of small fish & coiled ammonoid shells) */}
-        <svg
-          className="pointer-events-none absolute inset-0 z-[3] w-full h-full opacity-[0.07] blur-[2px]"
-          viewBox="0 0 1440 900"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-        >
-          {/* Distant fish shoal upper-left */}
-          <g fill="#EAF6FF">
-            <path d="M180 220 C192 214, 206 214, 218 220 L228 214 L225 220 L228 226 L218 220 C206 226, 192 226, 180 220 Z" />
-            <path d="M215 236 C225 231, 237 231, 246 236 L254 231 L251 236 L254 241 L246 236 C237 241, 225 241, 215 236 Z" />
-            <path d="M162 244 C172 240, 182 240, 190 244 L197 240 L195 244 L197 248 L190 244 C182 248, 172 248, 162 244 Z" />
-            <path d="M242 215 C250 211, 260 211, 268 215 L275 211 L273 215 L275 219 L268 215 C260 219, 250 219, 242 215 Z" />
-          </g>
-          {/* Distant coiled ammonoid silhouettes upper-right & lower-left */}
-          <g stroke="#6FE8FF" strokeWidth="2" fill="none">
-            <path d="M1170 250 m-22 0 a22 22 0 1 0 44 0 a16 16 0 1 0 -32 0 a10 10 0 1 0 20 0" />
-            <path d="M1225 285 m-14 0 a14 14 0 1 0 28 0 a10 10 0 1 0 -20 0" />
-            <path d="M260 660 m-18 0 a18 18 0 1 0 36 0 a12 12 0 1 0 -24 0" />
-          </g>
-        </svg>
-
-        {/* LAYER 6 (Top): Minimal 3-part Navigation */}
+        {/* Navigation UI (Top Layer) */}
         <Nav onOpenMenu={onOpenMenu} onNavigate={onNavigate} />
 
-        {/* LAYER 3: GIGANTIC Wordmark "SHASTASAURUS" sitting at ~52% vertical middle (z-10) */}
+        {/* LAYER 2: GIGANTIC Wordmark "SHASTASAURUS" sitting at ~50% vertical middle (z-10) */}
         <div
-          className="pointer-events-none absolute inset-x-0 top-[46%] md:top-[52%] -translate-y-1/2 z-10 flex flex-col items-center justify-center px-3"
+          className="pointer-events-none absolute inset-x-0 top-[45%] md:top-[50%] -translate-y-1/2 z-10 flex flex-col items-center justify-center px-2 sm:px-4"
           style={{
             transform: `translateY(-50%) scale(${wordmarkScrollScale})`,
             filter: wordmarkScrollBlur > 0.2 ? `blur(${wordmarkScrollBlur}px)` : undefined,
           }}
         >
           <div ref={wordmarkRef} className="w-full flex flex-col items-center">
-            {/* Accessible H1 */}
             <h1 className="sr-only">SHASTASAURUS — Strange Giant of the Triassic Seas</h1>
 
-            {/* Desktop & Tablet single-line gigantic wordmark (~85% viewport width) */}
+            {/* Desktop & Tablet single-line gigantic wordmark expanding side-by-side (~93% frame width) */}
             <div
               aria-hidden="true"
-              className="hidden md:flex items-center justify-center w-[85%] mx-auto font-display uppercase tracking-[-0.01em] leading-none hero-wordmark-glow select-none"
+              className="hidden md:flex items-center justify-between w-[93%] mx-auto font-display uppercase leading-none hero-wordmark-glow select-none overflow-hidden py-3"
               style={{
-                fontSize: fontSizePx ? `${fontSizePx}px` : '9.6vw',
+                fontSize: fontSizePx ? `${fontSizePx}px` : '11.2vw',
               }}
             >
               {WORDMARK_LETTERS.map((char, idx) => (
@@ -186,7 +215,7 @@ export const Hero: React.FC<HeroProps> = ({
                   className={`inline-block transition-all duration-700 ease-out ${
                     isLoaded
                       ? 'opacity-100 blur-0 translate-y-0'
-                      : 'opacity-0 blur-md translate-y-3'
+                      : 'opacity-0 blur-md translate-y-full'
                   }`}
                   style={{ transitionDelay: `${idx * 70}ms` }}
                 >
@@ -195,17 +224,17 @@ export const Hero: React.FC<HeroProps> = ({
               ))}
             </div>
 
-            {/* Mobile two-line split wordmark ("SHASTA / SAURUS" at ~19.5vw) */}
+            {/* Mobile two-line split wordmark ("SHASTA / SAURUS" side-by-side at ~21vw) */}
             <div
               aria-hidden="true"
-              className="flex md:hidden flex-col items-center justify-center w-full font-display uppercase tracking-[-0.01em] leading-[0.92] hero-wordmark-glow text-[19.5vw]"
+              className="flex md:hidden flex-col items-center justify-center w-[94%] mx-auto font-display uppercase leading-[0.92] hero-wordmark-glow text-[21vw]"
             >
-              <div className="flex justify-center">
+              <div className="flex justify-between w-full overflow-hidden">
                 {MOBILE_LINE_1.map((char, idx) => (
                   <span
                     key={idx}
                     className={`inline-block transition-all duration-700 ${
-                      isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-md'
+                      isLoaded ? 'opacity-100 blur-0 translate-y-0' : 'opacity-0 blur-md translate-y-full'
                     }`}
                     style={{ transitionDelay: `${idx * 65}ms` }}
                   >
@@ -213,12 +242,12 @@ export const Hero: React.FC<HeroProps> = ({
                   </span>
                 ))}
               </div>
-              <div className="flex justify-center">
+              <div className="flex justify-between w-full overflow-hidden">
                 {MOBILE_LINE_2.map((char, idx) => (
                   <span
                     key={idx}
                     className={`inline-block transition-all duration-700 ${
-                      isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-md'
+                      isLoaded ? 'opacity-100 blur-0 translate-y-0' : 'opacity-0 blur-md translate-y-full'
                     }`}
                     style={{ transitionDelay: `${(idx + 6) * 65}ms` }}
                   >
@@ -230,10 +259,8 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* LAYER 4: Subject Cutout IN FRONT OF Wordmark (z-20)
-            Positioned so the head/neck overlaps the middle 4 letters (T-A-S-A),
-            while the first 4 letters (SHAS) on the left and last 4 letters (URUS)
-            beneath the high tail arch remain completely visible and readable. */}
+        {/* LAYER 3: Subject Cutout IN FRONT OF Wordmark (z-20)
+            Head overlaps the middle letters while SHAS and URUS stay clear */}
         <div
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-hidden"
           style={{
@@ -242,10 +269,28 @@ export const Hero: React.FC<HeroProps> = ({
         >
           <div
             ref={creatureWrapRef}
-            className="w-full h-full flex items-center justify-center"
+            className="relative w-full h-full flex items-center justify-center"
           >
+            {/* Occasional small bubbles rising near the creature's head */}
+            <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+              {HEAD_BUBBLES.map((b) => (
+                <span
+                  key={b.id}
+                  className="hero-head-bubble absolute rounded-full border border-[#6FE8FF]/55 bg-[#EAF6FF]/20 shadow-[0_0_8px_rgba(111,232,255,0.4)]"
+                  style={{
+                    left: b.left,
+                    bottom: b.bottom,
+                    width: `${b.size}px`,
+                    height: `${b.size}px`,
+                    animationDelay: b.delay,
+                    animationDuration: b.duration,
+                  }}
+                />
+              ))}
+            </div>
+
             <div
-              className={`creature-idle relative w-[88vw] sm:w-[70vw] md:w-[56vw] max-w-[880px] translate-x-[4%] sm:translate-x-[7%] md:translate-x-[8%] translate-y-[14%] md:translate-y-[9%] transition-all duration-1000 ease-out ${
+              className={`creature-idle relative w-[98vw] sm:w-[86vw] md:w-[76vw] lg:w-[74vw] max-w-[1360px] translate-x-[2%] sm:translate-x-[4%] md:translate-x-[5%] translate-y-[10%] md:translate-y-[6%] transition-all duration-1000 ease-out ${
                 isLoaded
                   ? 'opacity-100 scale-100 blur-0'
                   : 'opacity-0 scale-[1.08] blur-md translate-x-[18%]'
@@ -255,22 +300,22 @@ export const Hero: React.FC<HeroProps> = ({
                 <img
                   src={imgSrc}
                   onError={() => {
-                    if (imgSrc !== HERO_ASSET_FALLBACK) {
-                      setImgSrc(HERO_ASSET_FALLBACK);
+                    if (imgSrc !== HERO_ASSET_ALT) {
+                      setImgSrc(HERO_ASSET_ALT);
                     }
                   }}
                   alt="Shastasaurus swimming through deep twilight ocean water"
                   referrerPolicy="no-referrer"
-                  className="w-full h-auto max-h-[80vh] object-contain creature-graded select-none"
+                  className="w-full h-auto max-h-[92vh] object-contain creature-graded select-none"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        {/* LAYER 5: Depth Haze (--abyss to transparent over bottom 35% of frame) */}
+        {/* LAYER 4: Depth Haze (--abyss to transparent over bottom 35% of frame) */}
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[36%] z-25"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[35%] z-25"
           style={{
             background:
               'linear-gradient(to top, #010614 0%, rgba(3, 15, 43, 0.88) 42%, transparent 100%)',
@@ -280,7 +325,7 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Bottom Tagline & Scroll Hint (z-30) */}
         <div className="relative z-30 mt-auto pb-6 sm:pb-8 px-6 flex flex-col items-center text-center">
-          <p className="font-display text-sm sm:text-base md:text-lg uppercase tracking-[0.22em] text-[#EAF6FF]/75 mb-5">
+          <p className="font-display text-sm sm:text-base md:text-lg uppercase tracking-[0.22em] text-[#EAF6FF]/70 mb-5">
             Strange Giant of the Triassic Seas
           </p>
 

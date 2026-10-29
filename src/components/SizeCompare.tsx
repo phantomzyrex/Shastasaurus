@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
 import { getSizeComparisonItems, SizeComparisonItem } from '../data/shastasaurusData';
 
 const renderSilhouetteSvg = (item: SizeComparisonItem) => {
@@ -85,7 +84,6 @@ const renderSilhouetteSvg = (item: SizeComparisonItem) => {
         </svg>
       );
     default:
-      // Shastasaurus & giant shastasaurid silhouette: slender body, NO dorsal fin, tiny head (~8.3%), short toothless snout
       return (
         <svg viewBox="0 0 500 85" className="w-full h-full overflow-visible">
           <path
@@ -110,7 +108,6 @@ const renderSilhouetteSvg = (item: SizeComparisonItem) => {
             stroke="#EAF6FF"
             strokeWidth="1.5"
           />
-          {/* Eye on tiny short-snouted head (at right end ~x=468) */}
           <circle cx="468" cy="42" r="2.6" fill="#010614" />
         </svg>
       );
@@ -128,7 +125,7 @@ export const SizeCompare: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="04"
+        number="05"
         depthTag="1,350 M · MIDNIGHT ZONE"
         kicker="MORPHOMETRIC SCALE COMPARISON"
         title="Size Comparison"
@@ -194,19 +191,22 @@ export const SizeCompare: React.FC = () => {
                   : 'border-[#EAF6FF]/12 bg-[#030F2B]/55'
               }`}
             >
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                <div className="flex flex-wrap items-baseline gap-3">
                   <h3 className="font-display text-base sm:text-lg uppercase tracking-[0.04em] text-[#EAF6FF]">
                     {item.name}
                   </h3>
-                  {item.chip && <EvidenceChip level={item.chip} />}
+                  {item.qualifier && (
+                    <span className="font-display text-[11px] uppercase tracking-[0.14em] text-[#6FE8FF]/85">
+                      · {item.qualifier}
+                    </span>
+                  )}
                 </div>
                 <span className="font-display text-sm sm:text-base text-[#6FE8FF] tracking-[0.08em] tabular-nums">
                   {item.lengthLabel}
                 </span>
               </div>
 
-              {/* Scaled SVG Silhouette Track */}
               <div className="w-full h-14 sm:h-16 bg-[#010614]/70 border border-[#EAF6FF]/10 px-3 py-2 flex items-center overflow-hidden">
                 <div
                   className="h-full transition-all duration-500 ease-out flex items-center"
@@ -224,10 +224,9 @@ export const SizeCompare: React.FC = () => {
         })}
       </div>
 
-      {/* Mandatory Scientific Clarification Caption */}
       <p className="mt-8 border border-[#6FE8FF]/35 bg-[#061B45]/45 px-5 py-4 text-sm sm:text-base text-[#EAF6FF]/90 font-light">
         <strong className="font-display uppercase tracking-[0.12em] text-[#6FE8FF] mr-2">
-          NOTE:
+          CAPTION:
         </strong>
         The 21 m ichthyosaur sometimes called a giant <em>Shastasaurus</em> is usually treated as{' '}
         <em>Shonisaurus</em> today.

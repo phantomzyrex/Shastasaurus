@@ -19,7 +19,7 @@ import { Timeline } from './components/Timeline';
 import { AnatomyHotspots } from './components/AnatomyHotspots';
 import { SizeCompare } from './components/SizeCompare';
 import { Feeding } from './components/Feeding';
-import { MapSection } from './components/MapSection';
+import { Map } from './components/Map';
 import { Taxonomy } from './components/Taxonomy';
 import { Evolution } from './components/Evolution';
 import { MythReality } from './components/MythReality';
@@ -29,29 +29,53 @@ import { Footer } from './components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
+export const DIVE_SECTIONS = [
+  { id: 'hero', num: '01', label: 'Surface Glow', depth: '0 m' },
+  { id: 'overview', num: '02', label: 'Overview', depth: '200 m' },
+  { id: 'discovery', num: '03', label: 'Discovery & History', depth: '550 m' },
+  { id: 'anatomy', num: '04', label: 'Anatomy', depth: '950 m' },
+  { id: 'size-comparison', num: '05', label: 'Size Comparison', depth: '1,350 m' },
+  { id: 'feeding', num: '06', label: 'Diet & Feeding', depth: '1,750 m' },
+  { id: 'habitat', num: '07', label: 'Habitat & Distribution', depth: '2,150 m' },
+  { id: 'classification', num: '08', label: 'Classification & Species', depth: '2,600 m' },
+  { id: 'evolution', num: '09', label: 'Evolution & Extinction', depth: '3,000 m' },
+  { id: 'myth-reality', num: '10', label: 'Myth vs. Reality', depth: '3,350 m' },
+  { id: 'gallery', num: '11', label: 'Gallery', depth: '3,650 m' },
+  { id: 'facts-sources', num: '12', label: 'Fast Facts & Sources', depth: '3,850 m' },
+  { id: 'contact', num: '13', label: 'Curatorial Contact', depth: '4,000 m' },
+] as const;
+
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSectionIdx, setActiveSectionIdx] = useState(0);
+  const [divePulse, setDivePulse] = useState(false);
+
   const lenisRef = useRef<Lenis | null>(null);
+  const targetSectionIdxRef = useRef<number | null>(null);
+  const targetResetTimerRef = useRef<number | null>(null);
+  const pulseTimerRef = useRef<number | null>(null);
 
   const handleLoaderComplete = useCallback(() => {
     setIsLoaded(true);
   }, []);
 
-  // Initialize Lenis smooth scroll + GSAP ScrollTrigger heading line-mask reveals
+  // Initialize Lenis smooth scroll + GSAP ScrollTrigger section & heading animations
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isHeadless = Boolean(navigator.webdriver);
 
     let lenis: Lenis | null = null;
     let rafId = 0;
 
-    const isHeadless = Boolean(navigator.webdriver);
-
     if (!prefersReducedMotion && !isHeadless) {
       lenis = new Lenis({
-        duration: 1.1,
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
+        wheelMultiplier: 0.95,
+        touchMultiplier: 1.5,
       });
       lenisRef.current = lenis;
 
@@ -64,18 +88,34 @@ export default function App() {
       rafId = requestAnimationFrame(raf);
     }
 
+    const computeActiveSection = () => {
+      const viewportTriggerY = window.scrollY + window.innerHeight * 0.36;
+      let currentIdx = 0;
+      for (let i = 0; i < DIVE_SECTIONS.length; i++) {
+        const el = document.getElementById(DIVE_SECTIONS[i].id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const absTop = rect.top + window.scrollY;
+        if (viewportTriggerY >= absTop - 40) {
+          currentIdx = i;
+        }
+      }
+      setActiveSectionIdx(currentIdx);
+    };
+
     const updateScroll = () => {
       const docEl = document.documentElement;
       const maxScroll = Math.max(1, docEl.scrollHeight - window.innerHeight);
       const current = window.scrollY;
       setScrollProgress(Math.max(0, Math.min(1, current / maxScroll)));
+      computeActiveSection();
     };
 
     updateScroll();
     window.addEventListener('scroll', updateScroll, { passive: true });
     window.addEventListener('resize', updateScroll);
 
-    // Animate section headings with GSAP ScrollTrigger
+    // GSAP ScrollTrigger animations for headings and deep-dive section transitions
     if (!prefersReducedMotion) {
       const headings = gsap.utils.toArray<HTMLElement>('.section-reveal-heading');
       headings.forEach((heading) => {
@@ -85,12 +125,35 @@ export default function App() {
           {
             yPercent: 0,
             opacity: 1,
-            duration: 0.85,
+            duration: 0.9,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: heading,
               start: 'top 90%',
               toggleActions: 'play none none none',
+            },
+          }
+        );
+      });
+
+      // Smooth deep-water emergence transition for each content section below the hero
+      const contentSections = gsap.utils.toArray<HTMLElement>(
+        'main > section:not(#hero), footer#contact'
+      );
+      contentSections.forEach((sectionEl) => {
+        gsap.fromTo(
+          sectionEl,
+          { y: 38, opacity: 0.22 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.0,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionEl,
+              start: 'top 88%',
+              end: 'top 35%',
+              toggleActions: 'play none none reverse',
             },
           }
         );
@@ -107,29 +170,137 @@ export default function App() {
     };
   }, []);
 
-  const handleNavigate = useCallback((sectionId: string) => {
-    const target = document.getElementById(sectionId);
-    if (!target) return;
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(target, { offset: 0, duration: 1.1 });
-    } else {
-      target.scrollIntoView({ behavior: 'smooth' });
+  const triggerDivePulse = useCallback(() => {
+    setDivePulse(true);
+    if (pulseTimerRef.current !== null) {
+      window.clearTimeout(pulseTimerRef.current);
     }
+    pulseTimerRef.current = window.setTimeout(() => {
+      setDivePulse(false);
+    }, 650);
   }, []);
+
+  const scrollToSectionIndex = useCallback(
+    (index: number) => {
+      const clamped = Math.max(0, Math.min(DIVE_SECTIONS.length - 1, index));
+      const section = DIVE_SECTIONS[clamped];
+      const target = document.getElementById(section.id);
+      if (!target) return;
+
+      targetSectionIdxRef.current = clamped;
+      setActiveSectionIdx(clamped);
+      triggerDivePulse();
+
+      if (targetResetTimerRef.current !== null) {
+        window.clearTimeout(targetResetTimerRef.current);
+      }
+      targetResetTimerRef.current = window.setTimeout(() => {
+        targetSectionIdxRef.current = null;
+      }, 1150);
+
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(clamped === 0 ? 0 : target, {
+          offset: 0,
+          duration: 1.15,
+        });
+      } else {
+        if (clamped === 0) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    },
+    [triggerDivePulse]
+  );
+
+  const handleNavigate = useCallback(
+    (sectionId: string) => {
+      const foundIdx = DIVE_SECTIONS.findIndex((s) => s.id === sectionId);
+      if (foundIdx >= 0) {
+        scrollToSectionIndex(foundIdx);
+        return;
+      }
+      const target = document.getElementById(sectionId);
+      if (!target) return;
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(target, { offset: 0, duration: 1.15 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    [scrollToSectionIndex]
+  );
 
   const handleBackToSurface = useCallback(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { duration: 1.3 });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, []);
+    scrollToSectionIndex(0);
+  }, [scrollToSectionIndex]);
+
+  // Global keyboard navigation: ArrowDown / ArrowUp / ArrowRight / ArrowLeft / Space / PageDown / PageUp / Home / End
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (menuOpen) return;
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+      const activeEl = document.activeElement as HTMLElement | null;
+      if (activeEl) {
+        const tag = activeEl.tagName;
+        if (
+          tag === 'INPUT' ||
+          tag === 'TEXTAREA' ||
+          tag === 'SELECT' ||
+          activeEl.isContentEditable
+        ) {
+          return;
+        }
+        // Let buttons handle Space/Enter natively if focused
+        if (tag === 'BUTTON' && e.code === 'Space') {
+          return;
+        }
+      }
+
+      const currentIdx =
+        targetSectionIdxRef.current !== null
+          ? targetSectionIdxRef.current
+          : activeSectionIdx;
+
+      if (
+        e.key === 'ArrowDown' ||
+        e.key === 'ArrowRight' ||
+        e.key === 'PageDown' ||
+        (e.code === 'Space' && !e.shiftKey)
+      ) {
+        e.preventDefault();
+        scrollToSectionIndex(currentIdx + 1);
+      } else if (
+        e.key === 'ArrowUp' ||
+        e.key === 'ArrowLeft' ||
+        e.key === 'PageUp' ||
+        (e.code === 'Space' && e.shiftKey)
+      ) {
+        e.preventDefault();
+        scrollToSectionIndex(currentIdx - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        scrollToSectionIndex(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        scrollToSectionIndex(DIVE_SECTIONS.length - 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, { passive: false });
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeSectionIdx, menuOpen, scrollToSectionIndex]);
 
   const depthMeters = calculateDepthFromScroll(scrollProgress);
+  const currentSection = DIVE_SECTIONS[activeSectionIdx] || DIVE_SECTIONS[0];
+  const isInFooter = depthMeters >= 3920;
 
   return (
     <div
       data-depth-meters={depthMeters}
+      data-active-section={currentSection.id}
       className="relative min-h-screen text-[#EAF6FF] transition-colors duration-300"
       style={{
         background:
@@ -148,6 +319,59 @@ export default function App() {
       {/* Decorative Bathypelagic Depth Gauge (0 m to 4,000 m) */}
       <DepthGauge depthMeters={depthMeters} />
 
+      {/* Deep-Dive Keyboard Navigation HUD (Bottom-Left) */}
+      <nav
+        aria-label="Deep-dive section keyboard navigation"
+        className={`fixed left-4 sm:left-6 bottom-6 z-40 hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-lg border bg-[#010614]/80 backdrop-blur-sm select-none transition-all duration-300 ${
+          isInFooter ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        } ${
+          divePulse
+            ? 'border-[#6FE8FF] shadow-[0_0_20px_rgba(111,232,255,0.35)]'
+            : 'border-[#EAF6FF]/15 hover:border-[#6FE8FF]/50'
+        }`}
+      >
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => scrollToSectionIndex(activeSectionIdx - 1)}
+            disabled={activeSectionIdx <= 0}
+            aria-label="Ascend to previous section (Up Arrow)"
+            title="Previous Section (↑ Arrow)"
+            className="w-6 h-6 flex items-center justify-center rounded border border-[#EAF6FF]/20 text-[11px] text-[#EAF6FF]/80 hover:border-[#6FE8FF] hover:text-[#6FE8FF] disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
+          >
+            ↑
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToSectionIndex(activeSectionIdx + 1)}
+            disabled={activeSectionIdx >= DIVE_SECTIONS.length - 1}
+            aria-label="Dive to next section (Down Arrow or Space)"
+            title="Next Section (↓ Arrow or Space)"
+            className="w-6 h-6 flex items-center justify-center rounded border border-[#EAF6FF]/20 text-[11px] text-[#EAF6FF]/80 hover:border-[#6FE8FF] hover:text-[#6FE8FF] disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
+          >
+            ↓
+          </button>
+        </div>
+
+        <div className="h-3.5 w-[1px] bg-[#EAF6FF]/15" aria-hidden="true" />
+
+        <div className="flex items-baseline gap-2">
+          <span className="font-display text-[11px] text-[#6FE8FF] tracking-[0.14em] tabular-nums">
+            {currentSection.num} / 13
+          </span>
+          <span className="font-display text-[10px] uppercase tracking-[0.16em] text-[#EAF6FF]/80 max-w-[140px] truncate">
+            {currentSection.label}
+          </span>
+        </div>
+
+        <span
+          className="hidden xl:inline-block ml-1 px-1.5 py-0.5 rounded bg-[#061B45]/70 border border-[#6FE8FF]/25 font-display text-[9px] uppercase tracking-[0.14em] text-[#6FE8FF]/85"
+          title="Use Up/Down Arrow keys or Spacebar to jump between depth sections"
+        >
+          SPACE / ↑↓ DIVE
+        </span>
+      </nav>
+
       {/* Full-Screen Menu Overlay */}
       <MenuOverlay
         isOpen={menuOpen}
@@ -157,7 +381,7 @@ export default function App() {
 
       {/* Main Content */}
       <main>
-        {/* 00 HERO */}
+        {/* 01 HERO */}
         <Hero
           isLoaded={isLoaded}
           scrollProgress={scrollProgress}
@@ -165,41 +389,41 @@ export default function App() {
           onNavigate={handleNavigate}
         />
 
-        {/* 01 OVERVIEW */}
+        {/* 02 OVERVIEW */}
         <Overview />
 
-        {/* 02 DISCOVERY AND HISTORY */}
+        {/* 03 DISCOVERY AND HISTORY */}
         <Timeline />
 
-        {/* 03 ANATOMY */}
+        {/* 04 ANATOMY */}
         <AnatomyHotspots />
 
-        {/* 04 SIZE COMPARISON */}
+        {/* 05 SIZE COMPARISON */}
         <SizeCompare />
 
-        {/* 05 DIET AND FEEDING */}
+        {/* 06 DIET AND FEEDING */}
         <Feeding />
 
-        {/* 06 HABITAT AND DISTRIBUTION */}
-        <MapSection />
+        {/* 07 HABITAT AND DISTRIBUTION */}
+        <Map />
 
-        {/* 07 CLASSIFICATION AND SPECIES */}
+        {/* 08 CLASSIFICATION AND SPECIES */}
         <Taxonomy />
 
-        {/* 08 EVOLUTION AND EXTINCTION */}
+        {/* 09 EVOLUTION AND EXTINCTION */}
         <Evolution />
 
-        {/* 09 MYTH VS REALITY */}
+        {/* 10 MYTH VS REALITY */}
         <MythReality />
 
-        {/* 10 GALLERY */}
+        {/* 11 GALLERY */}
         <Gallery />
 
-        {/* 11 FAST FACTS AND SOURCES */}
+        {/* 12 FAST FACTS AND SOURCES */}
         <FastFactsSources />
       </main>
 
-      {/* 12 CONTACT AND FOOTER */}
+      {/* 13 CONTACT AND FOOTER */}
       <Footer onBackToSurface={handleBackToSurface} />
     </div>
   );

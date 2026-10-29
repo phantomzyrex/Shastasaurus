@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { HERO_ASSET_PRIMARY, HERO_ASSET_FALLBACK } from '../data/shastasaurusData';
+import { HERO_ASSET_PRIMARY, HERO_ASSET_ALT } from '../data/shastasaurusData';
 
 interface MenuOverlayProps {
   isOpen: boolean;
@@ -8,18 +8,18 @@ interface MenuOverlayProps {
 }
 
 const MENU_ITEMS = [
-  { num: '01', label: 'Overview', id: 'overview', depth: '200 M' },
-  { num: '02', label: 'Discovery & History', id: 'discovery', depth: '550 M' },
-  { num: '03', label: 'Anatomy', id: 'anatomy', depth: '950 M' },
-  { num: '04', label: 'Size Comparison', id: 'size-comparison', depth: '1,350 M' },
-  { num: '05', label: 'Diet & Feeding', id: 'feeding', depth: '1,750 M' },
-  { num: '06', label: 'Habitat & Distribution', id: 'habitat', depth: '2,150 M' },
-  { num: '07', label: 'Classification & Species', id: 'classification', depth: '2,600 M' },
-  { num: '08', label: 'Evolution & Extinction', id: 'evolution', depth: '3,000 M' },
-  { num: '09', label: 'Myth vs Reality', id: 'myth-reality', depth: '3,350 M' },
-  { num: '10', label: 'Gallery', id: 'gallery', depth: '3,650 M' },
-  { num: '11', label: 'Fast Facts & Sources', id: 'facts-sources', depth: '3,850 M' },
-  { num: '12', label: 'Contact', id: 'contact', depth: '4,000 M' },
+  { num: '02', label: 'Overview', id: 'overview', depth: '200 M' },
+  { num: '03', label: 'Discovery & History', id: 'discovery', depth: '550 M' },
+  { num: '04', label: 'Anatomy', id: 'anatomy', depth: '950 M' },
+  { num: '05', label: 'Size Comparison', id: 'size-comparison', depth: '1,350 M' },
+  { num: '06', label: 'Diet & Feeding', id: 'feeding', depth: '1,750 M' },
+  { num: '07', label: 'Habitat & Distribution', id: 'habitat', depth: '2,150 M' },
+  { num: '08', label: 'Classification & Species', id: 'classification', depth: '2,600 M' },
+  { num: '09', label: 'Evolution & Extinction', id: 'evolution', depth: '3,000 M' },
+  { num: '10', label: 'Myth vs Reality', id: 'myth-reality', depth: '3,350 M' },
+  { num: '11', label: 'Gallery', id: 'gallery', depth: '3,650 M' },
+  { num: '12', label: 'Fast Facts & Sources', id: 'facts-sources', depth: '3,850 M' },
+  { num: '13', label: 'Contact', id: 'contact', depth: '4,000 M' },
 ];
 
 export const MenuOverlay: React.FC<MenuOverlayProps> = ({
@@ -48,17 +48,17 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({
       aria-hidden={!isOpen}
       style={{
         clipPath: isOpen
-          ? 'circle(150% at 50% 2.5rem)'
-          : 'circle(0% at 50% 2.5rem)',
+          ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+          : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
       }}
-      className={`fixed inset-0 z-[75] bg-[#020814]/98 backdrop-blur-md transition-[clip-path,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between px-6 sm:px-12 py-6 sm:py-8 overflow-y-auto ${
+      className={`fixed inset-0 z-[75] bg-[#020814]/98 transition-[clip-path,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between px-6 sm:px-12 py-6 sm:py-8 overflow-y-auto ${
         isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
     >
       {/* Top Bar with CLOSE and thin line */}
       <div className="flex items-start justify-between gap-8 border-b border-[#EAF6FF]/10 pb-5">
         <span className="font-display text-xs sm:text-sm uppercase tracking-[0.14em] text-[#EAF6FF]/70">
-          SHASTASAURUS · BATHYPELAGIC INDEX
+          01 HERO · SHASTASAURUS ARCHIVE
         </span>
 
         <button
@@ -81,7 +81,7 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({
         </span>
       </div>
 
-      {/* Main Content: 12 Numbered Chapters + Small Creature Copy */}
+      {/* Main Content: Numbered Links (02 Overview ... 13 Contact) + Small Creature Image */}
       <div className="my-auto py-8 max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
         <nav
           aria-label="Section index"
@@ -125,7 +125,7 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({
           <img
             src={imgSrc}
             onError={() => {
-              if (imgSrc !== HERO_ASSET_FALLBACK) setImgSrc(HERO_ASSET_FALLBACK);
+              if (imgSrc !== HERO_ASSET_ALT) setImgSrc(HERO_ASSET_ALT);
             }}
             alt="Shastasaurus specimen miniature preview"
             referrerPolicy="no-referrer"

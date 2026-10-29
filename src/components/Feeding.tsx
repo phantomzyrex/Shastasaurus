@@ -1,6 +1,5 @@
 import React from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
 
 export const Feeding: React.FC = () => {
   return (
@@ -10,7 +9,7 @@ export const Feeding: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="05"
+        number="06"
         depthTag="1,750 M · MIDNIGHT ZONE"
         kicker="OPEN SCIENTIFIC DEBATE · TROPHIC MECHANICS"
         title="Diet and Feeding"
@@ -19,53 +18,56 @@ export const Feeding: React.FC = () => {
 
       {/* Two-Column Scientific Debate Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-10">
-        {/* Column 1: Suction-Feeder Hypothesis */}
+        {/* Column 1: Suction-feeder hypothesis */}
         <article className="border border-[#6FE8FF]/40 bg-[#061B45]/50 p-7 sm:p-8 flex flex-col justify-between">
           <div>
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
               <span className="font-display text-xs uppercase tracking-[0.2em] text-[#6FE8FF]">
-                PROPOSAL · SANDER ET AL. (2011)
+                SANDER ET AL. (2011)
               </span>
-              <EvidenceChip level="DEBATED" note="hypothesis" />
+              <span className="font-display text-[11px] uppercase tracking-[0.16em] text-[#EAF6FF]/70">
+                HYPOTHESIS · DEBATED
+              </span>
             </div>
 
             <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-[0.04em] text-[#EAF6FF] mb-4">
-              Suction-Feeder Hypothesis
+              Suction-feeder hypothesis
             </h3>
 
             <p className="text-base text-[#EAF6FF]/85 leading-relaxed mb-4">
-              A tiny head, a short toothless snout and a reduced jaw resemble modern beaked whales,
+              The tiny head, short toothless snout and reduced jaw resemble modern beaked whales,
               which are largely toothless suction feeders. Suggested prey: soft-bodied cephalopods
               and fish.
             </p>
 
             <p className="text-sm text-[#EAF6FF]/75 leading-relaxed border-t border-[#EAF6FF]/12 pt-4">
               The study also speculated a link to low atmospheric oxygen in the Late Triassic
-              (hypothesis), proposing that toothless suction feeding reduced metabolic hunting costs
-              in deep or oxygen-minimum waters.
+              (hypothesis).
             </p>
           </div>
 
           <div className="mt-6 pt-4 border-t border-[#EAF6FF]/12 flex items-center justify-between text-xs text-[#6FE8FF]">
             <span className="font-display uppercase tracking-[0.14em]">
-              MODERN ANALOGUE: ZIPHIID BEAKED WHALES
+              MODERN ANALOGUE: BEAKED WHALES
             </span>
             <span className="tabular-nums">2011</span>
           </div>
         </article>
 
-        {/* Column 2: Biomechanical Challenge */}
+        {/* Column 2: The challenge */}
         <article className="border border-[#EAF6FF]/25 bg-[#030F2B]/80 p-7 sm:p-8 flex flex-col justify-between">
           <div>
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
               <span className="font-display text-xs uppercase tracking-[0.2em] text-[#3FA0E6]">
-                COUNTER-ARGUMENT · JI ET AL. (2013); MOTANI ET AL. (2013)
+                JI ET AL. (2013); MOTANI ET AL. (2013)
               </span>
-              <EvidenceChip level="DEBATED" note="biomechanics" />
+              <span className="font-display text-[11px] uppercase tracking-[0.16em] text-[#EAF6FF]/70">
+                BIOMECHANICAL CRITIQUE · DEBATED
+              </span>
             </div>
 
             <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-[0.04em] text-[#EAF6FF] mb-4">
-              Biomechanical Challenge
+              The challenge
             </h3>
 
             <p className="text-base text-[#EAF6FF]/85 leading-relaxed mb-4">
@@ -75,14 +77,14 @@ export const Feeding: React.FC = () => {
 
             <p className="text-sm text-[#EAF6FF]/75 leading-relaxed border-t border-[#EAF6FF]/12 pt-4">
               Quantitative comparisons of the hyobranchial apparatus in <em>S. liangae</em> (
-              <em>Guanlingsaurus</em>) found slender rod-like elements lacking the robust muscle
-              attachment surfaces needed to generate sudden intraoral pressure drops.
+              <em>Guanlingsaurus</em>) found slender rod-like elements lacking the robust attachment
+              surfaces needed for high-pressure intraoral suction.
             </p>
           </div>
 
           <div className="mt-6 pt-4 border-t border-[#EAF6FF]/12 flex items-center justify-between text-xs text-[#3FA0E6]">
             <span className="font-display uppercase tracking-[0.14em]">
-              EVIDENCE: SHORT, SLENDER HYOID CORPUS
+              EVIDENCE: SHORT, NARROW HYOID BONES
             </span>
             <span className="tabular-nums">2013</span>
           </div>
@@ -91,22 +93,24 @@ export const Feeding: React.FC = () => {
 
       {/* Comparative Shonisaurus Note */}
       <div className="mb-12 border border-[#EAF6FF]/16 bg-[#061B45]/35 p-6">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
           <span className="font-display text-xs uppercase tracking-[0.18em] text-[#6FE8FF]">
-            COMPARATIVE SHASTASAURID ECOLOGY
+            COMPARATIVE SHASTASAURID NOTE
           </span>
-          <EvidenceChip level="CONFIRMED" note="in related genus Shonisaurus" />
+          <span className="font-display text-[11px] uppercase tracking-[0.14em] text-[#EAF6FF]/65">
+            DRUCKENMILLER ET AL. (2014); KELLEY ET AL. (2022)
+          </span>
         </div>
         <p className="text-sm sm:text-base text-[#EAF6FF]/85 leading-relaxed">
-          Some other Triassic giants, such as <em>Shonisaurus</em>, had teeth and gut contents with
-          shells and bones of vertebrates (Druckenmiller et al., 2014; Kelley et al., 2022), so
-          shastasaurids may not all have fed the same way.
+          Other Triassic giants such as <em>Shonisaurus</em> had teeth, and gut contents with shells
+          and vertebrate bones (Druckenmiller et al., 2014; Kelley et al., 2022), so shastasaurids
+          may not all have fed the same way.
         </p>
       </div>
 
       {/* Animated Hypothetical Food-Web Graphic */}
       <div className="border border-[#EAF6FF]/15 bg-[#010614]/85 p-6 sm:p-8">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-3 mb-6">
           <div>
             <span className="font-display text-xs uppercase tracking-[0.2em] text-[#6FE8FF] block">
               TROPHIC NETWORK SCHEMATIC
@@ -115,7 +119,9 @@ export const Feeding: React.FC = () => {
               Candidate Pelagic Prey Relationships (Hypothetical)
             </h4>
           </div>
-          <EvidenceChip level="DEBATED" note="Hypothetical — feeding style unsettled" />
+          <span className="font-display text-xs uppercase tracking-[0.16em] text-[#6FE8FF]">
+            HYPOTHETICAL · FEEDING STYLE UNSETTLED
+          </span>
         </div>
 
         <div className="w-full overflow-x-auto">
@@ -132,7 +138,6 @@ export const Feeding: React.FC = () => {
               </linearGradient>
             </defs>
 
-            {/* Hypothetical Watermark Banner */}
             <rect
               x="16"
               y="14"
@@ -151,7 +156,7 @@ export const Feeding: React.FC = () => {
               fontFamily="Marcellus, serif"
               letterSpacing="2"
             >
-              HYPOTHETICAL MODEL
+              HYPOTHETICAL
             </text>
 
             {/* Connecting Dashed Flow Lines */}
@@ -203,7 +208,7 @@ export const Feeding: React.FC = () => {
                 fontFamily="Marcellus, serif"
                 letterSpacing="1.5"
               >
-                SHASTASAURUS (TOOTHLESS JAWS)
+                SHASTASAURUS (TOOTHLESS SNOUT)
               </text>
               <text
                 x="155"
@@ -213,11 +218,11 @@ export const Feeding: React.FC = () => {
                 fontSize="10"
                 fontFamily="Jost, sans-serif"
               >
-                Mechanism unresolved: suction vs ram/gulp capture
+                Feeding mechanism debated (not settled)
               </text>
             </g>
 
-            {/* Right Node 1: Soft-bodied Cephalopods ( Coleoids / Squid-like ) */}
+            {/* Right Node 1: Soft-bodied Cephalopods */}
             <g transform="translate(620, 28)">
               <rect
                 x="0"
@@ -228,7 +233,6 @@ export const Feeding: React.FC = () => {
                 stroke="#3FA0E6"
                 strokeOpacity="0.55"
               />
-              {/* Squid-like cephalopod silhouette */}
               <path
                 d="M 28 34 L 48 22 L 85 27 L 85 41 L 48 46 Z M 85 28 L 108 22 M 85 32 L 112 31 M 85 36 L 112 38 M 85 40 L 108 46"
                 fill="#6FE8FF"
@@ -246,11 +250,11 @@ export const Feeding: React.FC = () => {
                 SOFT-BODIED CEPHALOPODS
               </text>
               <text x="130" y="48" fill="#EAF6FF" fillOpacity="0.7" fontSize="11">
-                Candidate prey · Pelagic coleoids (Debated)
+                Candidate prey · Pelagic coleoids (debated)
               </text>
             </g>
 
-            {/* Right Node 2: Small Pelagic Fishes */}
+            {/* Right Node 2: Fishes */}
             <g transform="translate(620, 104)">
               <rect
                 x="0"
@@ -261,7 +265,6 @@ export const Feeding: React.FC = () => {
                 stroke="#3FA0E6"
                 strokeOpacity="0.55"
               />
-              {/* Fish silhouette */}
               <path
                 d="M 35 34 C 52 22, 76 22, 94 34 L 108 24 L 104 34 L 108 44 L 94 34 C 76 46, 52 46, 35 34 Z"
                 fill="#3FA0E6"
@@ -274,10 +277,10 @@ export const Feeding: React.FC = () => {
                 fontFamily="Marcellus, serif"
                 letterSpacing="1"
               >
-                SMALL ACTINOPTERYGIAN FISHES
+                PELAGIC FISHES
               </text>
               <text x="130" y="48" fill="#EAF6FF" fillOpacity="0.7" fontSize="11">
-                Candidate prey · Schooling Triassic bony fishes
+                Candidate prey · Schooling Triassic fishes (debated)
               </text>
             </g>
 
@@ -292,7 +295,6 @@ export const Feeding: React.FC = () => {
                 stroke="#3FA0E6"
                 strokeOpacity="0.55"
               />
-              {/* Coiled Ammonoid shell silhouette */}
               <circle
                 cx="68"
                 cy="34"
@@ -317,10 +319,10 @@ export const Feeding: React.FC = () => {
                 fontFamily="Marcellus, serif"
                 letterSpacing="1"
               >
-                AMMONOIDS &amp; NEKTON
+                AMMONITES &amp; NEKTON
               </text>
               <text x="130" y="48" fill="#EAF6FF" fillOpacity="0.7" fontSize="11">
-                Abundant in Guanling Biota alongside S. liangae
+                Co-occurring fauna in the Guanling Biota
               </text>
             </g>
           </svg>

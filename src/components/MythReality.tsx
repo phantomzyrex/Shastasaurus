@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
 import { MYTH_REALITY_CARDS } from '../data/shastasaurusData';
 
 export const MythReality: React.FC = () => {
@@ -34,11 +33,11 @@ export const MythReality: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="09"
+        number="10"
         depthTag="3,350 M · MIDNIGHT ZONE"
         kicker="POPULAR MISCONCEPTIONS VS PALEONTOLOGICAL RECORD"
         title="Myth vs Reality"
-        subtitle="Select any card below to flip between widespread popular claims and the current fossil evidence."
+        subtitle="Select any card below to flip between popular misconceptions and the fossil evidence."
       />
 
       <div className="mb-8 flex justify-end">
@@ -61,7 +60,7 @@ export const MythReality: React.FC = () => {
                 onClick={() => toggleCard(card.id)}
                 aria-pressed={isFlipped}
                 aria-label={`${card.mythNumber}: ${card.myth} Click to ${
-                  isFlipped ? 'show myth' : 'reveal scientific reality'
+                  isFlipped ? 'show myth' : 'reveal reality'
                 }`}
                 className={`relative w-full h-full text-left transition-transform duration-500 preserve-3d cursor-pointer focus-visible:outline-2 focus-visible:outline-[#6FE8FF] ${
                   isFlipped ? 'rotate-y-180' : ''
@@ -75,7 +74,7 @@ export const MythReality: React.FC = () => {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-display text-xs uppercase tracking-[0.2em] text-[#3FA0E6]">
-                      {card.mythNumber} · POPULAR CLAIM
+                      {card.mythNumber} · MYTH
                     </span>
                     <span className="font-display text-[10px] uppercase tracking-[0.16em] text-[#6FE8FF]">
                       CLICK TO FLIP ↻
@@ -87,8 +86,10 @@ export const MythReality: React.FC = () => {
                   </h3>
 
                   <div className="border-t border-[#EAF6FF]/12 pt-3 flex items-center justify-between text-xs text-[#EAF6FF]/60">
-                    <span>Examine fossil evidence</span>
-                    <EvidenceChip level={card.chip} />
+                    <span>Click to inspect scientific reality</span>
+                    <span className="font-display uppercase tracking-[0.14em] text-[#6FE8FF]">
+                      REALITY →
+                    </span>
                   </div>
                 </div>
 
@@ -100,22 +101,21 @@ export const MythReality: React.FC = () => {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-display text-xs uppercase tracking-[0.2em] text-[#6FE8FF]">
-                      SCIENTIFIC REALITY
+                      REALITY
                     </span>
-                    <EvidenceChip level={card.chip} />
+                    <span className="font-display text-[10px] uppercase tracking-[0.16em] text-[#EAF6FF]/75">
+                      {card.mythNumber}
+                    </span>
                   </div>
 
                   <div className="my-auto">
-                    <p className="font-display text-lg uppercase tracking-[0.06em] text-[#6FE8FF] mb-2">
-                      {card.verdict}
-                    </p>
-                    <p className="text-sm sm:text-base text-[#EAF6FF] leading-relaxed">
+                    <p className="text-base sm:text-lg text-[#EAF6FF] leading-relaxed">
                       {card.reality}
                     </p>
                   </div>
 
                   <div className="border-t border-[#EAF6FF]/15 pt-3 flex items-center justify-between text-xs text-[#6FE8FF]">
-                    <span>Verified against literature</span>
+                    <span>Verified against fossil record</span>
                     <span className="font-display uppercase tracking-[0.14em]">FLIP BACK ↺</span>
                   </div>
                 </div>

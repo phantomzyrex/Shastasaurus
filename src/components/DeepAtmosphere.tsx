@@ -185,24 +185,26 @@ export const DeepAtmosphere: React.FC<DeepAtmosphereProps> = ({ scrollProgress }
       {/* Global SVG Duotone Filter mapping shadows to --void (#010614) and highlights to --twilight/#6FE8FF */}
       <svg className="sr-only" aria-hidden="true" width="0" height="0">
         <defs>
-          <filter id="shastasaurus-duotone" colorInterpolationFilters="sRGB">
+          <filter
+            id="shastasaurus-duotone"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+            colorInterpolationFilters="sRGB"
+          >
             <feColorMatrix
               type="matrix"
-              values="0.25 0.55 0.20 0 0
-                      0.25 0.55 0.20 0 0
-                      0.25 0.55 0.20 0 0
+              values="0.88 0.06 0.06 0 0
+                      0.05 0.94 0.08 0 0
+                      0.04 0.12 1.05 0 0
                       0    0    0    1 0"
-              result="gray"
+              result="toned"
             />
-            <feComponentTransfer in="gray" result="contrasted">
-              <feFuncR type="table" tableValues="0.004 0.024 0.040 0.070 0.118 0.247 0.435 0.918" />
-              <feFuncG type="table" tableValues="0.024 0.106 0.173 0.282 0.435 0.627 0.910 0.965" />
-              <feFuncB type="table" tableValues="0.078 0.271 0.420 0.604 0.753 0.902 1.000 1.000" />
-            </feComponentTransfer>
-            <feComponentTransfer in="contrasted" result="graded">
-              <feFuncR type="linear" slope="1.18" intercept="-0.04" />
-              <feFuncG type="linear" slope="1.18" intercept="-0.04" />
-              <feFuncB type="linear" slope="1.20" intercept="-0.02" />
+            <feComponentTransfer in="toned" result="graded">
+              <feFuncR type="gamma" amplitude="1" exponent="1.08" offset="0" />
+              <feFuncG type="gamma" amplitude="1" exponent="1.04" offset="0" />
+              <feFuncB type="gamma" amplitude="1.04" exponent="0.96" offset="0" />
             </feComponentTransfer>
             <feComposite in="graded" in2="SourceAlpha" operator="in" />
           </filter>

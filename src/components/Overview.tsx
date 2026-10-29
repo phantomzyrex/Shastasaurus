@@ -1,7 +1,6 @@
 import React from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
-import { EVIDENCE_LEGEND, OVERVIEW_STATS } from '../data/shastasaurusData';
+import { OVERVIEW_STATS } from '../data/shastasaurusData';
 
 export const Overview: React.FC = () => {
   return (
@@ -11,7 +10,7 @@ export const Overview: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="01"
+        number="02"
         depthTag="200 M · TWILIGHT ZONE"
         kicker="OVERVIEW & DIAGNOSTIC PROFILE"
         title="The Mount Shasta Lizard"
@@ -32,31 +31,13 @@ export const Overview: React.FC = () => {
 
         <div className="lg:col-span-4 border border-[#EAF6FF]/14 bg-[#061B45]/45 p-6">
           <div className="font-display text-xs uppercase tracking-[0.2em] text-[#6FE8FF] mb-2">
-            CURATORIAL NOTE
+            SCIENTIFIC NOTE
           </div>
           <p className="text-sm text-[#EAF6FF]/80 leading-relaxed">
-            <em>Shastasaurus</em> is known from incomplete North American type material and debated
-            Chinese referrals. Every anatomical and ecological statement in this monograph carries
-            an explicit evidentiary classification.
+            <em>Shastasaurus</em> is poorly known and its classification is actively revised.
+            Estimates, debated interpretations, and broader ichthyosaur group traits are explicitly
+            labelled throughout this monograph.
           </p>
-        </div>
-      </div>
-
-      {/* One-line Evidence-Chip Legend */}
-      <div
-        aria-label="Evidence classification legend"
-        className="mb-12 border-y border-[#EAF6FF]/14 py-4 px-4 bg-[#030F2B]/70 flex flex-wrap items-center justify-between gap-4"
-      >
-        <span className="font-display text-xs uppercase tracking-[0.18em] text-[#6FE8FF]">
-          EVIDENCE CHIP LEGEND:
-        </span>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          {EVIDENCE_LEGEND.map((item) => (
-            <div key={item.level} className="flex items-center gap-2 text-xs text-[#EAF6FF]/80">
-              <EvidenceChip level={item.level} />
-              <span className="hidden xl:inline text-[#EAF6FF]/65">— {item.meaning}</span>
-            </div>
-          ))}
         </div>
       </div>
 
@@ -68,19 +49,15 @@ export const Overview: React.FC = () => {
             className="border border-[#EAF6FF]/14 bg-[#061B45]/35 hover:bg-[#061B45]/55 transition-colors p-6 flex flex-col justify-between"
           >
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
                 <span className="font-display text-xs uppercase tracking-[0.18em] text-[#EAF6FF]/65">
                   {stat.label}
                 </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {stat.chips.map((c, idx) => (
-                    <EvidenceChip
-                      key={`${stat.id}-${c}-${idx}`}
-                      level={c}
-                      note={idx === 1 && stat.subnote ? stat.subnote : undefined}
-                    />
-                  ))}
-                </div>
+                {stat.qualifier && (
+                  <span className="font-display text-[11px] uppercase tracking-[0.14em] text-[#6FE8FF]">
+                    {stat.qualifier}
+                  </span>
+                )}
               </div>
 
               <h3 className="font-display text-lg sm:text-xl text-[#EAF6FF] tracking-[0.02em] mb-2.5">

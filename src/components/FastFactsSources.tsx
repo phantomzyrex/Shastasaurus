@@ -10,7 +10,7 @@ export const FastFactsSources: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="11"
+        number="12"
         depthTag="3,850 M · ABYSSAL APPROACH"
         kicker="SUMMARY DIGEST & PEER-REVIEWED BIBLIOGRAPHY"
         title="Fast Facts and Sources"

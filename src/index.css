@@ -22,7 +22,7 @@
     font-family: var(--font-body);
     font-weight: 300;
     line-height: 1.7;
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
   }
 
   body {
@@ -35,6 +35,12 @@
   h1, h2, h3, h4, .font-display {
     font-family: var(--font-display);
   }
+}
+
+/* Deep-dive section transition styling */
+main > section,
+footer#contact {
+  will-change: transform, opacity;
 }
 
 .font-display {
@@ -79,15 +85,14 @@
     0 12px 44px rgba(1, 6, 20, 0.65);
 }
 
-/* Creature deep-water optical grading & bottom dissolve */
+/* Creature deep-water optical grading (bottom dissolve is baked into the padded PNG alpha channel) */
 .creature-bottom-mask {
-  -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+  overflow: visible;
 }
 
 @keyframes rimPulse {
   0%, 100% {
-    opacity: 0.92;
+    opacity: 0.94;
   }
   50% {
     opacity: 1;
@@ -95,7 +100,7 @@
 }
 
 .creature-graded {
-  filter: url(#shastasaurus-duotone) drop-shadow(0 0 42px rgba(80, 200, 255, 0.42));
+  filter: url(#shastasaurus-duotone) drop-shadow(0 -2px 14px rgba(111, 232, 255, 0.22));
   animation: rimPulse 6s ease-in-out infinite;
 }
 
@@ -160,6 +165,27 @@
   transform: rotateY(180deg);
 }
 
+@keyframes riseBubble {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.75);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.55;
+  }
+  80% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate3d(-10px, -110px, 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+.hero-head-bubble {
+  animation: riseBubble 6s ease-in infinite;
+}
+
 /* Custom subtle scrollbars for horizontal gallery */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -179,6 +205,7 @@
   }
   .creature-idle,
   .creature-graded,
+  .hero-head-bubble,
   .light-shaft-a,
   .light-shaft-b {
     animation: none !important;

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
 import {
   FOSSIL_LOCALITIES,
   FossilLocality,
   GUANLING_BIOTA_FAUNA,
 } from '../data/shastasaurusData';
 
-export const MapSection: React.FC = () => {
+export const Map: React.FC = () => {
   const [triassicMode, setTriassicMode] = useState(false);
   const [selectedSite, setSelectedSite] = useState<FossilLocality>(FOSSIL_LOCALITIES[0]);
 
@@ -18,7 +17,7 @@ export const MapSection: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="06"
+        number="07"
         depthTag="2,150 M · MIDNIGHT ZONE"
         kicker="PALEOBIOGEOGRAPHY · PANGAEA & PANTHALASSA"
         title="Habitat and Distribution"
@@ -41,7 +40,7 @@ export const MapSection: React.FC = () => {
                     : 'bg-[#061B45]/60 text-[#EAF6FF]/80 hover:text-[#EAF6FF]'
                 }`}
               >
-                Modern Continental Map
+                Modern World Map
               </button>
               <button
                 type="button"
@@ -58,7 +57,9 @@ export const MapSection: React.FC = () => {
             </div>
 
             {triassicMode && (
-              <EvidenceChip level="ESTIMATE" note="approximate paleogeography" />
+              <span className="font-display text-xs uppercase tracking-[0.16em] text-[#6FE8FF]">
+                SCHEMATIC VIEW · APPROXIMATE
+              </span>
             )}
           </div>
 
@@ -74,7 +75,6 @@ export const MapSection: React.FC = () => {
                   : 'Modern world map with Shastasaurus fossil locations in California, China, and British Columbia'
               }
             >
-              {/* Graticule Lines */}
               <g stroke="#1E6FC0" strokeOpacity="0.18" strokeWidth="1">
                 <line x1="0" y1="125" x2="1000" y2="125" />
                 <line x1="0" y1="250" x2="1000" y2="250" strokeDasharray="6 4" />
@@ -85,7 +85,6 @@ export const MapSection: React.FC = () => {
               </g>
 
               {!triassicMode ? (
-                /* Schematic Modern Continents */
                 <g
                   fill="#0A2C6B"
                   fillOpacity="0.55"
@@ -93,19 +92,13 @@ export const MapSection: React.FC = () => {
                   strokeOpacity="0.45"
                   strokeWidth="1.5"
                 >
-                  {/* North America */}
                   <path d="M 90 70 L 260 65 L 305 145 L 245 225 L 185 245 L 135 175 Z" />
-                  {/* South America */}
                   <path d="M 245 260 L 335 285 L 315 435 L 265 445 L 245 345 Z" />
-                  {/* Eurasia */}
                   <path d="M 445 75 L 865 75 L 895 195 L 785 265 L 645 245 L 545 195 L 435 165 Z" />
-                  {/* Africa */}
                   <path d="M 445 195 L 575 205 L 605 315 L 545 415 L 485 385 L 435 265 Z" />
-                  {/* Australia */}
                   <path d="M 765 335 L 875 335 L 885 415 L 775 415 Z" />
                 </g>
               ) : (
-                /* Schematic Late Triassic Pangaea & Tethys Sea (Approximate) */
                 <g>
                   <path
                     d="M 335 80 C 445 55, 585 75, 655 155 C 625 205, 555 215, 525 245 C 585 275, 645 315, 625 405 C 525 445, 405 425, 365 345 C 335 275, 315 185, 335 80 Z"
@@ -115,7 +108,6 @@ export const MapSection: React.FC = () => {
                     strokeOpacity="0.55"
                     strokeWidth="2"
                   />
-                  {/* South China / Tethyan microcontinent block */}
                   <path
                     d="M 620 200 L 680 195 L 690 240 L 630 245 Z"
                     fill="#0A2C6B"
@@ -202,7 +194,7 @@ export const MapSection: React.FC = () => {
             </svg>
           </div>
 
-          {/* Fossil Locality Selector Buttons + Active Locality Readout */}
+          {/* Fossil Locality Selector Buttons */}
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
             {FOSSIL_LOCALITIES.map((loc) => {
               const active = selectedSite.id === loc.id;
@@ -231,14 +223,13 @@ export const MapSection: React.FC = () => {
 
           {/* Selected Locality Detail */}
           <div className="border border-[#6FE8FF]/35 bg-[#061B45]/45 p-5">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
               <h3 className="font-display text-xl uppercase tracking-[0.04em] text-[#EAF6FF]">
                 {selectedSite.title}
               </h3>
-              <EvidenceChip
-                level={selectedSite.chip}
-                note={selectedSite.chipSublabel}
-              />
+              <span className="font-display text-xs uppercase tracking-[0.16em] text-[#6FE8FF]">
+                {selectedSite.qualifier}
+              </span>
             </div>
             <p className="text-xs uppercase tracking-[0.14em] text-[#6FE8FF] mb-2">
               {selectedSite.species} · {selectedSite.age} · {selectedSite.formation}
@@ -251,11 +242,13 @@ export const MapSection: React.FC = () => {
 
         {/* Right Side Card: The Guanling Biota (Wang et al., 2008) (4 cols) */}
         <aside className="lg:col-span-4 border border-[#EAF6FF]/15 bg-[#061B45]/40 p-6 sm:p-7">
-          <div className="flex items-center justify-between gap-2 mb-3">
+          <div className="flex items-baseline justify-between gap-2 mb-3">
             <span className="font-display text-xs uppercase tracking-[0.18em] text-[#6FE8FF]">
-              FOSSIL LAGERSTÄTTE · CHINA
+              FOSSIL SITE · GUIZHOU, CHINA
             </span>
-            <EvidenceChip level="CONFIRMED" />
+            <span className="font-display text-[11px] uppercase tracking-[0.14em] text-[#EAF6FF]/65">
+              WANG ET AL. (2008)
+            </span>
           </div>
 
           <h3 className="font-display text-2xl uppercase tracking-[0.04em] text-[#EAF6FF] mb-2">
@@ -263,12 +256,11 @@ export const MapSection: React.FC = () => {
           </h3>
           <p className="text-xs text-[#EAF6FF]/65 mb-5">
             Wayao Member of the Falang Formation (also called the Xiaowa Formation), Guizhou
-            Province · Reviewed by Wang et al. (2008)
+            Province
           </p>
 
           <p className="text-sm text-[#EAF6FF]/82 leading-relaxed mb-6">
-            Alongside <em>S. liangae</em>, this early Carnian marine deposit preserves a complete
-            Late Triassic pelagic ecosystem:
+            Animals found alongside <em>S. liangae</em> in this Late Triassic marine fossil site:
           </p>
 
           <div className="space-y-4 divide-y divide-[#EAF6FF]/12">

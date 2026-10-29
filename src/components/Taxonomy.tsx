@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
-import { EvidenceChip } from './EvidenceChip';
 import {
   SPECIES_STATUS_CARDS,
   CLASSIFICATION_SLIDER_YEARS,
@@ -22,20 +21,22 @@ export const Taxonomy: React.FC = () => {
       className="relative z-20 py-24 sm:py-32 px-6 sm:px-10 md:px-16 max-w-7xl mx-auto"
     >
       <SectionHeader
-        number="07"
+        number="08"
         depthTag="2,600 M · MIDNIGHT ZONE"
         kicker="SYSTEMATIC PALEONTOLOGY & NOMENCLATURE"
         title="Classification and Species"
-        subtitle="The taxonomic boundaries of Shastasaurus have shifted repeatedly as new specimens and phylogenetic matrices test which species belong in the genus."
+        subtitle="The taxonomic boundaries of Shastasaurus have shifted repeatedly as new specimens and phylogenetic analyses test which species belong in the genus."
       />
 
       {/* Taxonomy Hierarchy Card */}
       <div className="mb-12 border border-[#EAF6FF]/16 bg-[#030F2B]/80 p-6 sm:p-8">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
+        <div className="flex flex-wrap items-baseline justify-between gap-2 mb-5">
           <span className="font-display text-xs uppercase tracking-[0.2em] text-[#6FE8FF]">
-            LINNAEAN &amp; CLADISTIC HIERARCHY
+            TAXONOMY CARD
           </span>
-          <EvidenceChip level="CONFIRMED" />
+          <span className="font-display text-xs uppercase tracking-[0.16em] text-[#EAF6FF]/65">
+            MERRIAM, 1895
+          </span>
         </div>
 
         <div className="flex flex-wrap items-center gap-y-3 text-sm sm:text-base font-display uppercase tracking-[0.06em] text-[#EAF6FF]">
@@ -51,10 +52,6 @@ export const Taxonomy: React.FC = () => {
           <span className="mx-3 text-[#6FE8FF]" aria-hidden="true">&gt;</span>
           <span className="text-[#6FE8FF] border-b border-[#6FE8FF]">Genus Shastasaurus</span>
         </div>
-
-        <p className="mt-4 text-xs sm:text-sm text-[#EAF6FF]/70">
-          Clade Merriamosauria, suborder Longipinnati in some classifications.
-        </p>
       </div>
 
       {/* Interactive "How the classification keeps changing" Slider */}
@@ -65,11 +62,10 @@ export const Taxonomy: React.FC = () => {
               INTERACTIVE TAXONOMIC CHRONOLOGY
             </span>
             <h3 className="font-display text-2xl uppercase tracking-[0.04em] text-[#EAF6FF]">
-              How the Classification Keeps Changing
+              How the classification keeps changing
             </h3>
           </div>
 
-          {/* Year Stop Buttons (2004, 2011, 2013, 2021) */}
           <div className="flex items-center gap-2" role="group" aria-label="Classification year stops">
             {YEAR_STOPS.map((year) => {
               const active = selectedYear === year;
@@ -92,7 +88,6 @@ export const Taxonomy: React.FC = () => {
           </div>
         </div>
 
-        {/* Range Slider Input */}
         <div className="mb-6">
           <label htmlFor="taxonomy-year-slider" className="sr-only">
             Select taxonomic revision year (2004, 2011, 2013, 2021)
@@ -122,7 +117,6 @@ export const Taxonomy: React.FC = () => {
           </div>
         </div>
 
-        {/* Snapshot Readout for Selected Year */}
         <div className="border-t border-[#EAF6FF]/15 pt-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2 mb-5">
             <h4 className="font-display text-lg sm:text-xl text-[#EAF6FF]">
@@ -136,7 +130,7 @@ export const Taxonomy: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="border border-[#EAF6FF]/14 bg-[#010614]/70 p-4">
               <span className="font-display text-[11px] uppercase tracking-[0.16em] text-[#EAF6FF]/60 block mb-1">
-                CALIFORNIA TYPE MATERIAL
+                CALIFORNIA TYPE SPECIES
               </span>
               <p className="font-display text-lg text-[#EAF6FF] mb-1">
                 <em>{snapshot.californiaType.genusAssignment}</em>
@@ -167,9 +161,9 @@ export const Taxonomy: React.FC = () => {
         </div>
       </div>
 
-      {/* Interactive Species-Status Cards */}
+      {/* Species Cards with Status Line */}
       <h3 className="font-display text-xl uppercase tracking-[0.08em] text-[#EAF6FF] mb-5">
-        Species-Status Dossier
+        Species Cards (Taxonomy Debated)
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
         {SPECIES_STATUS_CARDS.map((card) => (
@@ -178,12 +172,12 @@ export const Taxonomy: React.FC = () => {
             className="border border-[#EAF6FF]/14 bg-[#030F2B]/70 p-6 flex flex-col justify-between"
           >
             <div>
-              <div className="flex items-start justify-between gap-2 mb-3">
-                <h4 className="font-display text-lg text-[#EAF6FF]">{card.taxon}</h4>
-                <EvidenceChip level={card.chip} />
-              </div>
-              <p className="font-display text-xs uppercase tracking-[0.14em] text-[#6FE8FF] mb-3">
-                {card.ageAndLocation} · {card.sizeText}
+              <p className="font-display text-[10px] uppercase tracking-[0.16em] text-[#6FE8FF] border-b border-[#EAF6FF]/12 pb-2 mb-3">
+                {card.statusLine}
+              </p>
+              <h4 className="font-display text-lg text-[#EAF6FF] mb-1.5">{card.taxon}</h4>
+              <p className="font-display text-xs uppercase tracking-[0.12em] text-[#EAF6FF]/60 mb-3">
+                {card.ageAndLocation}
               </p>
               <p className="text-sm text-[#EAF6FF]/82 leading-relaxed">{card.summary}</p>
             </div>
@@ -194,7 +188,7 @@ export const Taxonomy: React.FC = () => {
       {/* Relatives (one short line each) */}
       <div className="border border-[#EAF6FF]/14 bg-[#061B45]/30 p-6 sm:p-8">
         <h3 className="font-display text-lg uppercase tracking-[0.14em] text-[#6FE8FF] mb-4">
-          Shastasaurid &amp; Allied Relatives
+          Relatives
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {SHASTASAURID_RELATIVES.map((rel) => (
