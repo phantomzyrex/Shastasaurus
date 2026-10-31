@@ -13,6 +13,7 @@ import { CustomCursor } from './components/CustomCursor';
 import { DeepAtmosphere } from './components/DeepAtmosphere';
 import { DepthGauge } from './components/DepthGauge';
 import { MenuOverlay } from './components/MenuOverlay';
+import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { Overview } from './components/Overview';
 import { Timeline } from './components/Timeline';
@@ -371,6 +372,13 @@ export default function App() {
           SPACE / ↑↓ DIVE
         </span>
       </nav>
+
+      {/* Fixed Top Navigation (transitions to rounded deep-ocean glass bar when scrolled) */}
+      <Nav
+        isScrolled={scrollProgress > 0.004}
+        onOpenMenu={() => setMenuOpen(true)}
+        onNavigate={handleNavigate}
+      />
 
       {/* Full-Screen Menu Overlay */}
       <MenuOverlay

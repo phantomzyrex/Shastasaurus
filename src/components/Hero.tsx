@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Nav } from './Nav';
 import { HERO_ASSET_PRIMARY, HERO_ASSET_ALT } from '../data/shastasaurusData';
 
 interface HeroProps {
@@ -187,8 +186,8 @@ export const Hero: React.FC<HeroProps> = ({
           />
         </div>
 
-        {/* Navigation UI (Top Layer) */}
-        <Nav onOpenMenu={onOpenMenu} onNavigate={onNavigate} />
+        {/* Top Spacer matching fixed Nav height */}
+        <div className="h-16 sm:h-20 shrink-0" aria-hidden="true" />
 
         {/* LAYER 2: GIGANTIC Wordmark "SHASTASAURUS" sitting at ~50% vertical middle (z-10) */}
         <div
